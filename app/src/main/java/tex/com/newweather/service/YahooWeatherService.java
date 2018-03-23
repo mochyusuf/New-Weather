@@ -38,7 +38,7 @@ public class YahooWeatherService {
             @Override
             protected String doInBackground(String... strings) {
                 String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"nome, ak\") and u ='c'", strings[0]);
-                String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=select wind from weather.forecast where woeid in (select woeid from geo.places(1) where text='chicago, il')&format=json&callback=callbackFunction\"", Uri.encode(YQL));
+                String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
 
                 try {
                     URL url = new URL(endpoint);
