@@ -1,6 +1,7 @@
 package tex.com.newweather;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import tex.com.newweather.data.Channel;
+import tex.com.newweather.data.Item;
 import tex.com.newweather.service.WeatherServiceCallback;
 import tex.com.newweather.service.YahooWeatherService;
 
@@ -37,13 +39,25 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
         dialog.setMessage("Loading");
         dialog.show();
 
-        service.refreshWeather("Kuningan, JA");
+        service.refreshWeather("Sydney, Australia");
 
     }
 
     @Override
     public void serviceSuccess(Channel channel) {
         dialog.hide();
+
+        Item item = channel.getItem();
+
+        int resourceId = getResources().getIdentifier("drawable/_" + item.getCondition().getCode(), null, getPackageName());
+
+        Drawable weatherIconDrawable = getResources().getDrawable(resourceId);
+
+        weatherIconImageView.setImageDrawable(weatherIconDrawable);
+
+        temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+        conditionTextView.setText(item.getCondition().getDescription());
+        locationTextView.setText(service.getLocation());
     }
 
     @Override
